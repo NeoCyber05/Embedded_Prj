@@ -1,0 +1,16 @@
+../Core/Src/tm_stm32f4_mfrc522.c:46:13:MFRC522_Select	8	static
+../Core/Src/tm_stm32f4_mfrc522.c:51:13:MFRC522_Deselect	16	static
+../Core/Src/tm_stm32f4_mfrc522.c:63:16:MFRC522_SPITransfer	24	static
+../Core/Src/tm_stm32f4_mfrc522.c:93:6:MFRC522_WriteRegister	16	static
+../Core/Src/tm_stm32f4_mfrc522.c:101:9:MFRC522_ReadRegister	24	static
+../Core/Src/tm_stm32f4_mfrc522.c:113:13:MFRC522_SetBitMask	24	static
+../Core/Src/tm_stm32f4_mfrc522.c:119:13:MFRC522_ClearBitMask	24	static
+../Core/Src/tm_stm32f4_mfrc522.c:125:13:MFRC522_Reset	8	static
+../Core/Src/tm_stm32f4_mfrc522.c:131:13:MFRC522_AntennaOn	16	static
+../Core/Src/tm_stm32f4_mfrc522.c:141:6:MFRC522_Init	8	static
+../Core/Src/tm_stm32f4_mfrc522.c:160:9:MFRC522_Request	32	static
+../Core/Src/tm_stm32f4_mfrc522.c:178:9:MFRC522_Anticoll	32	static
+../Core/Src/tm_stm32f4_mfrc522.c:211:9:MFRC522_Check	24	static
+../Core/Src/tm_stm32f4_mfrc522.c:225:6:MFRC522_Halt	24	static
+../Core/Src/tm_stm32f4_mfrc522.c:237:13:MFRC522_CalculateCRC	48	static
+../Core/Src/tm_stm32f4_mfrc522.c:263:16:MFRC522_ToCard	48	static
