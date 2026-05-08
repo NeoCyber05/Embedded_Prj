@@ -1,5 +1,4 @@
 # Nhận diện ngón tay và hiển thị LED 7 thanh
-
 Project này gồm 2 phần:
 
 - Code C chạy trên STM32F429 để nhận dữ liệu serial và hiển thị số lên LED 7 thanh.
