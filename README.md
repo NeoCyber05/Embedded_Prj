@@ -82,7 +82,6 @@ Lưu ý:
 ## Nạp firmware STM32
 
 Nạp file:
-
 - `Debug/TEST_NE.elf`
 
 hoặc build lại trong STM32CubeIDE.
