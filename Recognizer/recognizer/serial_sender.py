@@ -3,6 +3,8 @@ from __future__ import annotations
 import time
 from typing import Optional
 
+VALID_DIGITS = set(range(1, 6))
+
 try:
     import serial
     from serial.tools import list_ports
@@ -67,8 +69,15 @@ class SerialDigitSender:
     def last_sent_digit(self) -> Optional[int]:
         return self._last_sent_digit
 
+    def send_digit(self, digit: int) -> None:
+        if digit not in VALID_DIGITS:
+            raise ValueError("digit must be in range 1..5")
+
+        self._write_digit(digit)
+        self._last_sent_digit = digit
+
     def update(self, detected_digit: int) -> Optional[int]:
-        candidate_digit = detected_digit if 1 <= detected_digit <= 5 else None
+        candidate_digit = detected_digit if detected_digit in VALID_DIGITS else None
 
         if candidate_digit != self._candidate_digit:
             self._candidate_digit = candidate_digit
@@ -85,8 +94,7 @@ class SerialDigitSender:
         if candidate_digit == self._last_sent_digit:
             return None
 
-        self._write_digit(candidate_digit)
-        self._last_sent_digit = candidate_digit
+        self.send_digit(candidate_digit)
         return candidate_digit
 
     def _write_digit(self, digit: int) -> None:
@@ -100,3 +108,31 @@ class SerialDigitSender:
         if self._serial is not None:
             self._serial.close()
             self._serial = None
+
+
+def send_digit_sequence(
+    port: str,
+    digits: str = "12345",
+    baudrate: int = 115200,
+    delay_seconds: float = 0.25,
+) -> list[int]:
+    sequence = []
+    for char in digits:
+        if char.isspace() or char in ",;":
+            continue
+        if char < "1" or char > "5":
+            raise ValueError("test digits must contain only 1..5")
+        sequence.append(int(char))
+
+    if not sequence:
+        raise ValueError("test digits must contain at least one digit in range 1..5")
+
+    sender = SerialDigitSender(port=port, baudrate=baudrate, stable_frames=1)
+    try:
+        for digit in sequence:
+            sender.send_digit(digit)
+            time.sleep(delay_seconds)
+    finally:
+        sender.close()
+
+    return sequence

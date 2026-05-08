@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
 
-from recognizer.apps import run_finger_counter
-from recognizer.serial_sender import list_serial_ports
+from recognizer.serial_sender import list_serial_ports, send_digit_sequence
 
 
 def build_parser() -> ArgumentParser:
@@ -35,6 +34,13 @@ def build_parser() -> ArgumentParser:
         action="store_true",
         help="List available serial ports and exit.",
     )
+    parser.add_argument(
+        "--send-test",
+        nargs="?",
+        const="12345",
+        default=None,
+        help="Send a digit sequence to STM32 and exit. Default sequence is 12345.",
+    )
     return parser
 
 
@@ -50,6 +56,26 @@ def main() -> None:
             else:
                 print("No serial ports found.")
             return
+
+        if args.send_test is not None:
+            if args.serial_port is None:
+                raise ValueError("--send-test requires --serial-port COMx")
+
+            sent_digits = send_digit_sequence(
+                port=args.serial_port,
+                digits=args.send_test,
+                baudrate=args.baudrate,
+            )
+            sent_text = "".join(str(digit) for digit in sent_digits)
+            print(f"Sent {sent_text} to {args.serial_port} at {args.baudrate} baud.")
+            return
+
+        if args.serial_port is None:
+            print("Serial disabled. Add --serial-port COMx to send digits to STM32.")
+        else:
+            print(f"Sending stable digits to {args.serial_port} at {args.baudrate} baud.")
+
+        from recognizer.apps import run_finger_counter
 
         run_finger_counter(
             camera_index=args.camera_index,
