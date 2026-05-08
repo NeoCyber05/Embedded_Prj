@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := TEST_NE
+BUILD_ARTIFACT_NAME := Embedded_Prj
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-TEST_NE.elf \
+Embedded_Prj.elf \
 
 MAP_FILES += \
-TEST_NE.map \
+Embedded_Prj.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-TEST_NE.list \
+Embedded_Prj.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: TEST_NE.elf secondary-outputs
+main-build: Embedded_Prj.elf secondary-outputs
 
 # Tool invocations
-TEST_NE.elf TEST_NE.map: $(OBJS) $(USER_OBJS) D:\Download\StudyMaterial\Embedded_System\CODE\TEST_NE\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "TEST_NE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Download\StudyMaterial\Embedded_System\CODE\TEST_NE\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TEST_NE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Embedded_Prj.elf Embedded_Prj.map: $(OBJS) $(USER_OBJS) D:\stm32_workspace\Embedded_Prj\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Embedded_Prj.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\stm32_workspace\Embedded_Prj\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Embedded_Prj.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-TEST_NE.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "TEST_NE.list"
+Embedded_Prj.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Embedded_Prj.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) TEST_NE.elf TEST_NE.list TEST_NE.map default.size.stdout
+	-$(RM) Embedded_Prj.elf Embedded_Prj.list Embedded_Prj.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

@@ -39,6 +39,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
+uint8_t debug_rx_byte = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -125,18 +126,19 @@ void TIM6_DAC_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim6);
 }
 
-void USART3_IRQHandler(void)
+void USART1_IRQHandler(void)
 {
-  uint32_t status = USART3->SR;
+  uint32_t status = USART1->SR;
 
   if ((status & USART_SR_RXNE) != 0U)
   {
-    App_ProcessReceivedByte((uint8_t)USART3->DR);
+    debug_rx_byte = (uint8_t)USART1->DR;
+    App_ProcessReceivedByte(debug_rx_byte);
     return;
   }
 
   if ((status & (USART_SR_ORE | USART_SR_NE | USART_SR_FE | USART_SR_PE)) != 0U)
   {
-    (void)USART3->DR;
+    (void)USART1->DR;
   }
 }

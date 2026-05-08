@@ -8,7 +8,7 @@ TIM_HandleTypeDef htim6;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM6_Init(void);
-static void MX_USART3_Init(void);
+static void MX_USART1_Init(void);
 static void APP_SetDetectedSymbol(uint8_t detected_symbol);
 
 int main(void)
@@ -17,7 +17,7 @@ int main(void)
   SystemClock_Config();
   MX_GPIO_Init();
   MX_TIM6_Init();
-  MX_USART3_Init();
+  MX_USART1_Init();
 
   Set7SegDisplayValue(0);
 
@@ -86,30 +86,30 @@ static void MX_TIM6_Init(void)
   }
 }
 
-static void MX_USART3_Init(void)
+static void MX_USART1_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
+  uint32_t pclk2 = HAL_RCC_GetPCLK2Freq();
 
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_USART3_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_USART1_CLK_ENABLE();
 
-  GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+  GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+  GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  USART3->CR1 = 0U;
-  USART3->CR2 = 0U;
-  USART3->CR3 = 0U;
-  USART3->BRR = (pclk1 + (APP_UART_BAUDRATE / 2U)) / APP_UART_BAUDRATE;
-  USART3->CR1 = USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE;
-  USART3->CR1 |= USART_CR1_UE;
+  USART1->CR1 = 0U;
+  USART1->CR2 = 0U;
+  USART1->CR3 = 0U;
+  USART1->BRR = (pclk2 + (APP_UART_BAUDRATE / 2U)) / APP_UART_BAUDRATE;
+  USART1->CR1 = USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE;
+  USART1->CR1 |= USART_CR1_UE;
 
-  HAL_NVIC_SetPriority(USART3_IRQn, 1, 0);
-  HAL_NVIC_EnableIRQ(USART3_IRQn);
+  HAL_NVIC_SetPriority(USART1_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(USART1_IRQn);
 }
 
 static void MX_GPIO_Init(void)
